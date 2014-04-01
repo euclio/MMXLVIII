@@ -19,8 +19,7 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
           self.addTile(cell);
         }
       });
-    });
-
+    }); 
     self.updateScore(metadata.score);
     self.updateBestScore(metadata.bestScore);
 
@@ -62,7 +61,43 @@ HTMLActuator.prototype.addTile = function (tile) {
   this.applyClasses(wrapper, classes);
 
   inner.classList.add("tile-inner");
-  inner.textContent = tile.value;
+
+  // We want to display a roman numeral instead of the actual value
+  var result = "";
+
+  var numerals = {
+      1000: "M",
+      500:  "D",
+      100:  "C",
+      50:   "L",
+      10:   "X",
+      5:    "V",
+      1:    "I",
+  };
+
+  // Keep the amounts in reverse order
+  var values = [1000, 500, 100, 50, 10, 5, 1];
+
+  var amountRemaining = tile.value;
+
+  for (var i = 0; i < values.length; i++) {
+    while (amountRemaining >= values[i]) {
+        amountRemaining -= values[i];
+        result += numerals[values[i]];
+    }
+  }
+
+  // Handle the special cases. Order matters because we want to replace the
+  // largest values first. That is, we must replace "DCCCC" before "CCCC" or we
+  // would get an invalid value.
+  result = result.replace("DCCCC", "CM");
+  result = result.replace("CCCC",  "CD");
+  result = result.replace("LXXXX", "XC");
+  result = result.replace("XXXX",  "XL");
+  result = result.replace("VIIII", "IX");
+  result = result.replace("IIII",  "IV");
+
+  inner.textContent = result;
 
   if (tile.previousPosition) {
     // Make sure that the tile gets rendered in the previous position first
