@@ -1,7 +1,7 @@
 # MMXVIII
 A Latin clone of [2048](http://gabrielecirulli.github.io/2048/).
 
-[Play it here!](http://htmlpreview.github.io/?https://github.com/euclio/MMXLVIII/blob/master/index.html)
+[Play it here!](http://euclio.github.io/MMXLVIII)
 
 # Screenshot
 <p align="center">
